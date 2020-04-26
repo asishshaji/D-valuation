@@ -22,6 +22,7 @@ contract Paper is Ownable{
         bool acceptedValidation;
     }
     
+    // Make a struct for college.
     
     uint public paperCount = 0;
     uint public valuatorCount = 0;

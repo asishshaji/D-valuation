@@ -1,6 +1,5 @@
 const Paper = artifacts.require('Paper');
 
-
 contract("Paper", accounts => {
     let contract;
 
