@@ -13,7 +13,7 @@ contract("Paper", accounts => {
     const valuator3 = accounts[5];
     const valuator4 = accounts[6];
 
-    const student =  accounts[7];
+    const student = accounts[7];
 
 
     before(async () => {
@@ -29,6 +29,7 @@ contract("Paper", accounts => {
         it("College added", async () => {
             const result1 = await contract.addColleges(college1);
             const result2 = await contract.addColleges(college2);
+
         });
 
         it("Valutors added", async () => {
@@ -42,28 +43,37 @@ contract("Paper", accounts => {
             assert.equal(result, 4);
 
         });
-        
-        it("Paper added", async () => {
-            const result = await contract.addPaper(student, "ASFSAF",{from:college1});
+
+        it("Paper added and random valuator added", async () => {
+            const result = await contract.addPaper(student, "ASFSAF", { from: college1 });
             const info = await contract.papers(0);
+            assert.equal(info.student, student);
+            assert.equal(info.ipfsHash, "ASFSAF");
+            assert.equal(info.college, college1);
         });
 
-    
+
         it("Marks added", async () => {
-            const result = await contract.addMarks(0,99,{from:valuator3});
+            const info = await contract.papers(0);
+            const a = info.val1.valuator
+
+            const result = await contract.addMarks(0, 99, { from: a });
+            const inof = await contract.papers(0)
+            assert.equal(inof.val1.marks, 99);
+
         });
 
-        it("Dispute Raised", async () => {
-            const result = await contract.getResultForStudent(0,{from:student});
-        });
+        // it("Dispute Raised", async () => {
+        //     const result = await contract.getResultForStudent(0,{from:student});
+        // });
 
 
-        it("Result for student", async () => {
-            const result = await contract.getResultForStudent(0,{from:student});
-            console.log(result)
-        });
+        // it("Result for student", async () => {
+        //     const result = await contract.getResultForStudent(0,{from:student});
+        //     console.log(result)
+        // });
 
-        
+
 
     })
 });

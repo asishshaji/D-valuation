@@ -24,7 +24,7 @@ export default function App() {
                         <Link to="/college">College</Link>
                     </li>
                     <li>
-                        <Link to="/valutor">Valutor</Link>
+                        <Link to="/valutor">Valuator</Link>
                     </li>
                 </ul>
             </Container>

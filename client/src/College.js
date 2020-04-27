@@ -45,7 +45,7 @@ class App extends Component {
             );
 
 
-            this.setState({ web3, accounts, contract: instance, selectedAccout: accounts[0], college: accounts[4] });
+            this.setState({ web3, accounts, contract: instance, selectedAccout: accounts[0] });
 
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -59,7 +59,7 @@ class App extends Component {
 
 
     submitPaper = async () => {
-        await this.state.contract.methods.addPaper(this.state.studentAddress, this.state.ipfsHash).send({ from: this.state.college, gas:3000000 }, (err, hash) => console.log(hash, err));
+        await this.state.contract.methods.addPaper(this.state.studentAddress, this.state.ipfsHash).send({ from: this.state.selectedAccout, gas: 3000000 }, (err, hash) => console.log(hash, err));
     }
 
 
