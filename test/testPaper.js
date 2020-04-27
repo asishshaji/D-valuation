@@ -14,6 +14,8 @@ contract("Paper", accounts => {
     const valuator4 = accounts[6];
 
     const student = accounts[7];
+    const student1 = accounts[8];
+
 
 
     before(async () => {
@@ -63,17 +65,20 @@ contract("Paper", accounts => {
 
         });
 
-        // it("Dispute Raised", async () => {
-        //     const result = await contract.getResultForStudent(0,{from:student});
-        // });
+        it("Dispute Raised", async () => {
+            await contract.studentRaiseDispute(0, { from: student });
+            const result = await contract.getStateForStudent(0, { from: student })
+            assert.equal(result.toNumber(), 3)
+        });
 
+        it("get papers for valuators", async () => {
 
-        // it("Result for student", async () => {
-        //     const result = await contract.getResultForStudent(0,{from:student});
-        //     console.log(result)
-        // });
+            const info = await contract.papers(0);
+            const valuator = info.val1.valuator;
+            const result = await contract.getAssignedPapers({ from: valuator });
+            console.log(result.logs[0].args);
 
-
+        });
 
     })
 });

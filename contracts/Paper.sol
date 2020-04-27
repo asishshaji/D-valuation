@@ -11,6 +11,9 @@ contract Paper is Ownable {
         bool isValuated;
         uint256 marks;
     }
+
+    enum State {SUBMITTED, VALUATED, ACCEPTED, REVIEWING}
+
     struct Item {
         uint256 pid;
         string ipfsHash;
@@ -24,8 +27,6 @@ contract Paper is Ownable {
         bool acceptedValidation;
         State state;
     }
-
-    enum State {SUBMITTED, VALUATED, ACCEPTED, REVIEWING}
 
     uint256 public paperCount = 0;
     uint256 public valuatorCount = 0;
@@ -207,21 +208,23 @@ contract Paper is Ownable {
         uint256 randomnumber = uint256(
             keccak256(abi.encodePacked(now, msg.sender))
         ) % valuatorCount;
-        papers[_paperId].reviewer = valuatorsAddresses[randomnumber];
-        papers[_paperId].raiseDispute = true;
-        papers[_paperId].state = State.REVIEWING;
+        Item memory paper = papers[_paperId];
+        paper.reviewer = valuatorsAddresses[randomnumber];
+        paper.raiseDispute = true;
+        paper.state = State.REVIEWING;
+        papers[_paperId] = paper;
     }
 
     function acceptValidation(uint256 _paperId) public onlyStudent(_paperId) {
         papers[_paperId].acceptedValidation = true;
         if (papers[_paperId].raiseDispute) {
             papers[_paperId].reviewer.transfer(4);
+            papers[_paperId].raiseDispute = false;
         } else {
             papers[_paperId].val1.valuator.transfer(2);
             papers[_paperId].val2.valuator.transfer(2);
         }
         papers[_paperId].state = State.ACCEPTED;
     }
-
     //   Student END.
 }
